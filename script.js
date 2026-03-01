@@ -112,20 +112,26 @@
   });
 
   // Step 7: swipe left → next image; swipe right → previous image
-  let swipeStartX = 0;
-  let swipeStartY = 0;
+  let swipeStartX = null; // null = no gesture tracked (0 is a valid coordinate — fix #2)
+  let swipeStartY = null;
+
+  function resetSwipe() { swipeStartX = null; swipeStartY = null; }
 
   lightbox.addEventListener('touchstart', (e) => {
-    if (!isOpen || e.touches.length !== 1) return; // ignore multi-touch (pinch-to-zoom)
+    if (!isOpen) return;
+    if (e.touches.length > 1) { resetSwipe(); return; } // fix #1: second finger joined — cancel tracking
     swipeStartX = e.touches[0].clientX;
     swipeStartY = e.touches[0].clientY;
   }, { passive: true }); // passive: we never call preventDefault — keeps scroll smooth
 
   lightbox.addEventListener('touchend', (e) => {
-    if (!isOpen || e.changedTouches.length !== 1) return;
+    if (!isOpen || swipeStartX === null || e.touches.length !== 0) return; // fix #1: bail if fingers still down
     const dx = e.changedTouches[0].clientX - swipeStartX;
     const dy = e.changedTouches[0].clientY - swipeStartY;
+    resetSwipe();
     if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy)) return; // too short or too vertical
     navigate(dx < 0 ? 1 : -1); // left swipe → next, right swipe → previous
   }, { passive: true });
+
+  lightbox.addEventListener('touchcancel', resetSwipe); // fix #3: OS interrupts gesture (notification, etc.)
 }());
