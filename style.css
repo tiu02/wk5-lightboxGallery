@@ -129,6 +129,7 @@ main {
 
 .lightbox__caption {
   flex: 0 0 auto;          /* always its natural height — never squeezed */
+  min-height: 5.75rem;     /* reserves space for a 2-line desc; image area stays stable across images */
   padding: 1.5rem 1rem 0;  /* generous gap between image bottom and text */
   width: 100%;
   text-align: center;
