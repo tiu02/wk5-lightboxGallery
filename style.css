@@ -115,9 +115,9 @@ main {
 
 .lightbox__img {
   display: block;
-  max-width: 90vw;
+  width: 90vw;              /* expand to fill available width, not just cap it */
   max-height: calc(90vh - 3rem); /* 3rem reserved for the caption below */
-  object-fit: contain;
+  object-fit: contain;     /* scale up/down to fit; never crops */
 }
 
 .lightbox__caption {

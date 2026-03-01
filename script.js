@@ -21,7 +21,7 @@
 
   function openLightbox(index) {
     const [id, caption] = images[index];
-    lightboxImg.src         = `https://picsum.photos/id/${id}/800/600`;
+    lightboxImg.src         = `https://picsum.photos/id/${id}/1600/1200`;
     lightboxImg.alt         = caption;
     lightboxCap.textContent = caption;
     lightbox.style.display  = 'flex';
