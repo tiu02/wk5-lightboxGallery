@@ -23,7 +23,8 @@
   // Regions to hide from AT while the lightbox dialog is open
   const bgRegions = [document.querySelector('header'), document.querySelector('main')];
 
-  let lastFocus = null; // element to return focus to when the lightbox closes
+  let lastFocus = null;  // element to return focus to when the lightbox closes
+  let isOpen    = false; // tracks open/closed state independently of CSS
 
   function openLightbox(index) {
     const [id, title, desc] = images[index];
@@ -31,23 +32,25 @@
     lightboxImg.alt           = desc;
     lightboxTitle.textContent = title;
     lightboxDesc.textContent  = desc;
-    lastFocus                 = document.activeElement;  // remember the trigger button
-    bgRegions.forEach((el) => el.setAttribute('aria-hidden', 'true')); // hide background from AT
+    if (!isOpen) lastFocus    = document.activeElement; // only capture on first open (fix #2)
+    isOpen                    = true;
+    bgRegions.filter(Boolean).forEach((el) => el.setAttribute('aria-hidden', 'true')); // fix #1
     lightbox.style.display    = 'flex';
     closeBtn.focus();                                    // move focus into the dialog
   }
 
   function closeLightbox() {
+    isOpen                 = false;
     lightbox.style.display = 'none';
     lightboxImg.removeAttribute('src'); // src='' triggers a request to the current page URL
-    bgRegions.forEach((el) => el.removeAttribute('aria-hidden')); // restore background to AT
+    bgRegions.filter(Boolean).forEach((el) => el.removeAttribute('aria-hidden')); // fix #1
     if (lastFocus) lastFocus.focus();   // return focus to the thumbnail that opened it
   }
 
   // Step 5: Escape closes; Tab is trapped within the open lightbox.
   // Focusable elements are queried live so Step 6 nav buttons are caught automatically.
   document.addEventListener('keydown', (e) => {
-    if (lightbox.style.display !== 'flex') return;
+    if (!isOpen) return; // fix #3: state flag instead of CSS implementation detail
 
     if (e.key === 'Escape') {
       closeLightbox();
@@ -63,6 +66,13 @@
       if (focusable.length === 0) return;
       const first = focusable[0];
       const last  = focusable[focusable.length - 1];
+
+      // fix #4: if focus escaped the lightbox entirely, pull it back in
+      if (!lightbox.contains(document.activeElement)) {
+        e.preventDefault();
+        (e.shiftKey ? last : first).focus();
+        return;
+      }
 
       if (e.shiftKey) {
         if (document.activeElement === first) { e.preventDefault(); last.focus(); }
