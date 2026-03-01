@@ -105,24 +105,29 @@ main {
   z-index: 100;
 }
 
-/* figure stacks the full-size image and caption vertically */
+/* figure is the flex column that holds image + caption inside 90vh */
 .lightbox__figure {
   margin: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 90vw;
+  max-width: 1200px;
+  max-height: 90vh;        /* outer constraint — image + caption never exceed this */
 }
 
 .lightbox__img {
   display: block;
-  width: 90vw;              /* expand to fill available width, not just cap it */
-  max-height: calc(90vh - 3rem); /* 3rem reserved for the caption below */
+  flex: 1 1 auto;          /* fill whatever height remains after the caption */
+  min-height: 0;           /* allow shrinking below intrinsic height in a flex column */
+  width: 100%;
   object-fit: contain;     /* scale up/down to fit; never crops */
 }
 
 .lightbox__caption {
+  flex: 0 0 auto;          /* always its natural height — never squeezed */
   padding: 1.5rem 1rem 0;  /* generous gap between image bottom and text */
-  max-width: 90vw;
+  width: 100%;
   text-align: center;
 }
 

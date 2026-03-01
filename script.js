@@ -31,11 +31,11 @@
 
   function closeLightbox() {
     lightbox.style.display = 'none';
-    lightboxImg.src        = '';
+    lightboxImg.removeAttribute('src'); // src='' triggers a request to the current page URL
   }
 
   // Open when any thumbnail button is clicked
-  document.querySelectorAll('.gallery button').forEach((btn) => {
+  document.querySelectorAll('.gallery__item button').forEach((btn) => {
     btn.addEventListener('click', () => openLightbox(Number(btn.dataset.index)));
   });
 
