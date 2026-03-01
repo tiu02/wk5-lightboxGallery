@@ -110,4 +110,22 @@
   lightbox.addEventListener('click', (e) => {
     if (e.target === lightbox) closeLightbox();
   });
+
+  // Step 7: swipe left → next image; swipe right → previous image
+  let swipeStartX = 0;
+  let swipeStartY = 0;
+
+  lightbox.addEventListener('touchstart', (e) => {
+    if (!isOpen || e.touches.length !== 1) return; // ignore multi-touch (pinch-to-zoom)
+    swipeStartX = e.touches[0].clientX;
+    swipeStartY = e.touches[0].clientY;
+  }, { passive: true }); // passive: we never call preventDefault — keeps scroll smooth
+
+  lightbox.addEventListener('touchend', (e) => {
+    if (!isOpen || e.changedTouches.length !== 1) return;
+    const dx = e.changedTouches[0].clientX - swipeStartX;
+    const dy = e.changedTouches[0].clientY - swipeStartY;
+    if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy)) return; // too short or too vertical
+    navigate(dx < 0 ? 1 : -1); // left swipe → next, right swipe → previous
+  }, { passive: true });
 }());
