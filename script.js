@@ -19,12 +19,15 @@
   const lightboxTitle = lightbox.querySelector('.lightbox__title');
   const lightboxDesc  = lightbox.querySelector('.lightbox__desc');
   const closeBtn      = lightbox.querySelector('.lightbox__close');
+  const prevBtn       = lightbox.querySelector('.lightbox__prev');
+  const nextBtn       = lightbox.querySelector('.lightbox__next');
 
   // Regions to hide from AT while the lightbox dialog is open
   const bgRegions = [document.querySelector('header'), document.querySelector('main')];
 
-  let lastFocus = null;  // element to return focus to when the lightbox closes
-  let isOpen    = false; // tracks open/closed state independently of CSS
+  let lastFocus    = null;  // element to return focus to when the lightbox closes
+  let isOpen       = false; // tracks open/closed state independently of CSS
+  let currentIndex = 0;     // index into images[] of the currently displayed image
 
   function openLightbox(index) {
     const [id, title, desc] = images[index];
@@ -32,6 +35,7 @@
     lightboxImg.alt           = desc;
     lightboxTitle.textContent = title;
     lightboxDesc.textContent  = desc;
+    currentIndex              = index;
     if (!isOpen) lastFocus    = document.activeElement; // only capture on first open (fix #2)
     isOpen                    = true;
     bgRegions.filter(Boolean).forEach((el) => el.setAttribute('aria-hidden', 'true')); // fix #1
@@ -47,15 +51,19 @@
     if (lastFocus) lastFocus.focus();   // return focus to the thumbnail that opened it
   }
 
+  // Step 6: advance by +1 or -1 with wrap-around
+  function navigate(dir) {
+    openLightbox((currentIndex + dir + images.length) % images.length);
+  }
+
   // Step 5: Escape closes; Tab is trapped within the open lightbox.
   // Focusable elements are queried live so Step 6 nav buttons are caught automatically.
   document.addEventListener('keydown', (e) => {
     if (!isOpen) return; // fix #3: state flag instead of CSS implementation detail
 
-    if (e.key === 'Escape') {
-      closeLightbox();
-      return;
-    }
+    if (e.key === 'Escape')     { closeLightbox(); return; }
+    if (e.key === 'ArrowLeft')  { navigate(-1);    return; }
+    if (e.key === 'ArrowRight') { navigate(1);     return; }
 
     if (e.key === 'Tab') {
       const focusable = [
@@ -86,6 +94,10 @@
   document.querySelectorAll('.gallery__item button').forEach((btn) => {
     btn.addEventListener('click', () => openLightbox(Number(btn.dataset.index)));
   });
+
+  // Step 6: navigate with arrow buttons
+  prevBtn.addEventListener('click', () => navigate(-1));
+  nextBtn.addEventListener('click', () => navigate(1));
 
   // Close on × button
   closeBtn.addEventListener('click', closeLightbox);
