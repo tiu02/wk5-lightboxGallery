@@ -102,6 +102,8 @@ main {
   background: rgba(0, 0, 0, 0.85);
   align-items: center;
   justify-content: center;
+  gap: 0.75rem;            /* space between nav buttons and figure */
+  padding-inline: 0.5rem;  /* keeps buttons off the viewport edges */
   z-index: 100;
 }
 
@@ -111,7 +113,8 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 90vw;
+  flex: 1 1 auto;          /* fills the space left by the flanking nav buttons */
+  min-width: 0;            /* allow shrinking below content size in the flex row */
   max-width: 1200px;
   max-height: 90vh;        /* outer constraint — image + caption never exceed this */
 }
@@ -174,28 +177,27 @@ main {
 }
 
 /* ── Lightbox prev / next ──────────────────────────────────── */
+/* In-flow flex items — figure fills the space between them, so   */
+/* buttons never overlap the image at any viewport width.          */
 
 .lightbox__prev,
 .lightbox__next {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  padding: 0.75rem 1rem;
-  font-size: 2.5rem;
+  flex-shrink: 0;            /* never compress; figure yields space first */
+  align-self: center;        /* vertically centre alongside the figure */
+  padding: 1.25rem 0.875rem; /* generous touch target (≥ 44 × 44 px) */
+  font-size: 3.5rem;
   line-height: 1;
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.55);           /* dark semi-opaque — legible over any image */
   color: #fff;
-  border: 2px solid rgba(255, 255, 255, 0.4);
-  border-radius: 4px;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.9); /* extra contrast over bright image areas */
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 6px;
   cursor: pointer;
 }
 
-.lightbox__prev { left: 1rem; }
-.lightbox__next { right: 1rem; }
-
 .lightbox__prev:hover,
 .lightbox__next:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(0, 0, 0, 0.75);
 }
 
 .lightbox__prev:focus-visible,

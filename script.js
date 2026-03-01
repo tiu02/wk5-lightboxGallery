@@ -36,11 +36,14 @@
     lightboxTitle.textContent = title;
     lightboxDesc.textContent  = desc;
     currentIndex              = index;
-    if (!isOpen) lastFocus    = document.activeElement; // only capture on first open (fix #2)
-    isOpen                    = true;
-    bgRegions.filter(Boolean).forEach((el) => el.setAttribute('aria-hidden', 'true')); // fix #1
-    lightbox.style.display    = 'flex';
-    closeBtn.focus();                                    // move focus into the dialog
+
+    if (!isOpen) {                                         // first open only — skip during navigation
+      lastFocus = document.activeElement;
+      isOpen    = true;
+      bgRegions.filter(Boolean).forEach((el) => el.setAttribute('aria-hidden', 'true'));
+      lightbox.style.display = 'flex';
+      closeBtn.focus();
+    }
   }
 
   function closeLightbox() {
@@ -62,6 +65,7 @@
     if (!isOpen) return; // fix #3: state flag instead of CSS implementation detail
 
     if (e.key === 'Escape')     { closeLightbox(); return; }
+    if (e.target.matches('input, textarea, select')) return; // let arrow keys work natively in inputs
     if (e.key === 'ArrowLeft')  { navigate(-1);    return; }
     if (e.key === 'ArrowRight') { navigate(1);     return; }
 
