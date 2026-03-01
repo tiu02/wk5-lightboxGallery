@@ -14,49 +14,76 @@
     <main>
       <ul class="gallery">
         <li>
-          <button type="button" data-index="0" aria-label="View full image: Forest path with sunlight filtering through tall trees">
-            <img src="https://picsum.photos/id/10/400/300" alt="Forest path with sunlight filtering through tall trees" />
-          </button>
+          <figure class="gallery__item">
+            <button type="button" data-index="0" aria-label="View full image: Forest path with sunlight filtering through tall trees">
+              <img src="https://picsum.photos/id/10/400/300" alt="Forest path with sunlight filtering through tall trees" />
+            </button>
+            <figcaption class="gallery__caption" aria-hidden="true">Forest path with sunlight filtering through tall trees</figcaption>
+          </figure>
         </li>
         <li>
-          <button type="button" data-index="1" aria-label="View full image: Rocky mountain landscape under a clear blue sky">
-            <img src="https://picsum.photos/id/20/400/300" alt="Rocky mountain landscape under a clear blue sky" />
-          </button>
+          <figure class="gallery__item">
+            <button type="button" data-index="1" aria-label="View full image: Rocky mountain landscape under a clear blue sky">
+              <img src="https://picsum.photos/id/20/400/300" alt="Rocky mountain landscape under a clear blue sky" />
+            </button>
+            <figcaption class="gallery__caption" aria-hidden="true">Rocky mountain landscape under a clear blue sky</figcaption>
+          </figure>
         </li>
         <li>
-          <button type="button" data-index="2" aria-label="View full image: Calm lake reflecting surrounding pine trees">
-            <img src="https://picsum.photos/id/30/400/300" alt="Calm lake reflecting surrounding pine trees" />
-          </button>
+          <figure class="gallery__item">
+            <button type="button" data-index="2" aria-label="View full image: Calm lake reflecting surrounding pine trees">
+              <img src="https://picsum.photos/id/30/400/300" alt="Calm lake reflecting surrounding pine trees" />
+            </button>
+            <figcaption class="gallery__caption" aria-hidden="true">Calm lake reflecting surrounding pine trees</figcaption>
+          </figure>
         </li>
         <li>
-          <button type="button" data-index="3" aria-label="View full image: Aerial view of a winding river through green fields">
-            <img src="https://picsum.photos/id/40/400/300" alt="Aerial view of a winding river through green fields" loading="lazy" />
-          </button>
+          <figure class="gallery__item">
+            <button type="button" data-index="3" aria-label="View full image: Aerial view of a winding river through green fields">
+              <img src="https://picsum.photos/id/40/400/300" alt="Aerial view of a winding river through green fields" loading="lazy" />
+            </button>
+            <figcaption class="gallery__caption" aria-hidden="true">Aerial view of a winding river through green fields</figcaption>
+          </figure>
         </li>
         <li>
-          <button type="button" data-index="4" aria-label="View full image: Close-up of a wooden dock extending over still water">
-            <img src="https://picsum.photos/id/50/400/300" alt="Close-up of a wooden dock extending over still water" loading="lazy" />
-          </button>
+          <figure class="gallery__item">
+            <button type="button" data-index="4" aria-label="View full image: Close-up of a wooden dock extending over still water">
+              <img src="https://picsum.photos/id/50/400/300" alt="Close-up of a wooden dock extending over still water" loading="lazy" />
+            </button>
+            <figcaption class="gallery__caption" aria-hidden="true">Close-up of a wooden dock extending over still water</figcaption>
+          </figure>
         </li>
         <li>
-          <button type="button" data-index="5" aria-label="View full image: Snow-capped peaks rising above low clouds">
-            <img src="https://picsum.photos/id/60/400/300" alt="Snow-capped peaks rising above low clouds" loading="lazy" />
-          </button>
+          <figure class="gallery__item">
+            <button type="button" data-index="5" aria-label="View full image: Snow-capped peaks rising above low clouds">
+              <img src="https://picsum.photos/id/60/400/300" alt="Snow-capped peaks rising above low clouds" loading="lazy" />
+            </button>
+            <figcaption class="gallery__caption" aria-hidden="true">Snow-capped peaks rising above low clouds</figcaption>
+          </figure>
         </li>
         <li>
-          <button type="button" data-index="6" aria-label="View full image: Golden wheat field at sunset">
-            <img src="https://picsum.photos/id/70/400/300" alt="Golden wheat field at sunset" loading="lazy" />
-          </button>
+          <figure class="gallery__item">
+            <button type="button" data-index="6" aria-label="View full image: Golden wheat field at sunset">
+              <img src="https://picsum.photos/id/70/400/300" alt="Golden wheat field at sunset" loading="lazy" />
+            </button>
+            <figcaption class="gallery__caption" aria-hidden="true">Golden wheat field at sunset</figcaption>
+          </figure>
         </li>
         <li>
-          <button type="button" data-index="7" aria-label="View full image: Cobblestone street lined with colourful buildings">
-            <img src="https://picsum.photos/id/80/400/300" alt="Cobblestone street lined with colourful buildings" loading="lazy" />
-          </button>
+          <figure class="gallery__item">
+            <button type="button" data-index="7" aria-label="View full image: Cobblestone street lined with colourful buildings">
+              <img src="https://picsum.photos/id/80/400/300" alt="Cobblestone street lined with colourful buildings" loading="lazy" />
+            </button>
+            <figcaption class="gallery__caption" aria-hidden="true">Cobblestone street lined with colourful buildings</figcaption>
+          </figure>
         </li>
         <li>
-          <button type="button" data-index="8" aria-label="View full image: Desert sand dunes casting long evening shadows">
-            <img src="https://picsum.photos/id/90/400/300" alt="Desert sand dunes casting long evening shadows" loading="lazy" />
-          </button>
+          <figure class="gallery__item">
+            <button type="button" data-index="8" aria-label="View full image: Desert sand dunes casting long evening shadows">
+              <img src="https://picsum.photos/id/90/400/300" alt="Desert sand dunes casting long evening shadows" loading="lazy" />
+            </button>
+            <figcaption class="gallery__caption" aria-hidden="true">Desert sand dunes casting long evening shadows</figcaption>
+          </figure>
         </li>
       </ul>
     </main>
@@ -64,7 +91,10 @@
     <!-- Lightbox overlay — opened/closed by JS in Step 4 -->
     <div id="lightbox" class="lightbox">
       <button type="button" class="lightbox__close" aria-label="Close lightbox">&times;</button>
-      <img class="lightbox__img" src="" alt="" />
+      <figure class="lightbox__figure">
+        <img class="lightbox__img" alt="" />
+        <figcaption class="lightbox__caption"></figcaption>
+      </figure>
     </div>
 
     <script src="script.js"></script>
