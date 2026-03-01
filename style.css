@@ -121,18 +121,28 @@ main {
 }
 
 .lightbox__caption {
-  color: #fff;
-  font-size: 1rem;       /* slightly larger — it's a headline in the lightbox */
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: 0.01em;
-  text-align: center;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
-  padding: 0.75rem 1rem 0;
+  padding: 1.5rem 1rem 0;  /* generous gap between image bottom and text */
   max-width: 90vw;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  text-align: center;
+}
+
+.lightbox__title {
+  color: #fff;
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  margin: 0 0 0.4rem;
+}
+
+.lightbox__desc {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  margin: 0;
 }
 
 .lightbox__close {
