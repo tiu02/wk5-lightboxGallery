@@ -96,7 +96,9 @@ main {
 /* ── Lightbox ─────────────────────────────────────────────── */
 
 .lightbox {
-  display: none; /* switched to flex by JS in Step 4 */
+  /* Always display:flex so CSS transitions can run.
+     visibility:hidden keeps it out of tab-order and hidden from AT when closed. */
+  display: flex;
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.85);
@@ -105,6 +107,19 @@ main {
   gap: 0.75rem;            /* space between nav buttons and figure */
   padding-inline: 0.5rem;  /* keeps buttons off the viewport edges */
   z-index: 100;
+
+  /* Closed state — invisible and non-interactive */
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+/* Open state — JS adds this class; removing it triggers fade-out */
+.lightbox--open {
+  opacity: 1;
+  visibility: visible; /* takes effect instantly so fade-in is visible */
+  pointer-events: auto;
 }
 
 /* figure is the flex column that holds image + caption inside 90vh */
@@ -117,6 +132,14 @@ main {
   min-width: 0;            /* allow shrinking below content size in the flex row */
   max-width: 1200px;
   max-height: 90vh;        /* outer constraint — image + caption never exceed this */
+
+  /* Scale-in animation: starts slightly small, grows to natural size on open */
+  transform: scale(0.88);
+  transition: transform 0.3s ease;
+}
+
+.lightbox--open .lightbox__figure {
+  transform: scale(1);
 }
 
 .lightbox__img {
@@ -205,4 +228,15 @@ main {
 .lightbox__next:focus-visible {
   outline: 3px solid #fff;
   outline-offset: 2px;
+}
+
+/* ── Responsive tweaks ─────────────────────────────────────── */
+
+/* Compact nav buttons on phones (≤ 480 px) to give the image more room */
+@media (max-width: 480px) {
+  .lightbox__prev,
+  .lightbox__next {
+    padding: 0.75rem 0.5rem;
+    font-size: 2.25rem;
+  }
 }

@@ -41,17 +41,18 @@
       lastFocus = document.activeElement;
       isOpen    = true;
       bgRegions.filter(Boolean).forEach((el) => el.setAttribute('aria-hidden', 'true'));
-      lightbox.style.display = 'flex';
+      lightbox.classList.add('lightbox--open'); // triggers CSS fade-in + scale-in
       closeBtn.focus();
     }
   }
 
   function closeLightbox() {
-    isOpen                 = false;
-    lightbox.style.display = 'none';
-    lightboxImg.removeAttribute('src'); // src='' triggers a request to the current page URL
-    bgRegions.filter(Boolean).forEach((el) => el.removeAttribute('aria-hidden')); // fix #1
-    if (lastFocus) lastFocus.focus();   // return focus to the thumbnail that opened it
+    isOpen = false;
+    lightbox.classList.remove('lightbox--open'); // triggers CSS fade-out
+    bgRegions.filter(Boolean).forEach((el) => el.removeAttribute('aria-hidden'));
+    if (lastFocus) lastFocus.focus(); // return focus immediately — don't wait for animation
+    // Remove src only after the overlay has fully faded out (avoids jarring blank during animation)
+    lightbox.addEventListener('transitionend', () => lightboxImg.removeAttribute('src'), { once: true });
   }
 
   // Step 6: advance by +1 or -1 with wrap-around
