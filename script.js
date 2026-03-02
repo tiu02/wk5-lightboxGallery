@@ -51,15 +51,22 @@
     lightbox.classList.remove('lightbox--open'); // triggers CSS fade-out
     bgRegions.filter(Boolean).forEach((el) => el.removeAttribute('aria-hidden'));
     if (lastFocus) lastFocus.focus(); // return focus immediately — don't wait for animation
-    // Remove src after the overlay fades out. Filtered to the opacity transition on the
-    // lightbox element itself — ignores visibility, and ignores bubbled events from child
-    // elements (e.g. .lightbox__figure's transform). The !isOpen guard means a quick
-    // reopen before the fade completes won't blank the freshly loaded image.
-    lightbox.addEventListener('transitionend', function srcCleanup(e) {
-      if (e.target !== lightbox || e.propertyName !== 'opacity') return;
-      lightbox.removeEventListener('transitionend', srcCleanup);
-      if (!isOpen) lightboxImg.removeAttribute('src');
-    });
+    // Remove src after the overlay fades out. Reading the computed duration after the class
+    // is removed tells us whether a real transition will run (> 0) or not (transition:none
+    // via prefers-reduced-motion or any other override). If no transition, clean up
+    // immediately — otherwise wait for transitionend so the image doesn't blank mid-fade.
+    // The listener filters on e.target and e.propertyName to ignore bubbled child events
+    // and the visibility property; !isOpen guards against a fast reopen blanking the image.
+    const hasFade = parseFloat(getComputedStyle(lightbox).transitionDuration) > 0;
+    if (!hasFade) {
+      lightboxImg.removeAttribute('src');
+    } else {
+      lightbox.addEventListener('transitionend', function srcCleanup(e) {
+        if (e.target !== lightbox || e.propertyName !== 'opacity') return;
+        lightbox.removeEventListener('transitionend', srcCleanup);
+        if (!isOpen) lightboxImg.removeAttribute('src');
+      });
+    }
   }
 
   // Step 6: advance by +1 or -1 with wrap-around

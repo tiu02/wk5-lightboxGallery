@@ -148,10 +148,12 @@ main {
   }
 }
 
-/* Respect the user's motion preference — disable all lightbox animations */
+/* Respect the user's motion preference — disable all lightbox animations.
+   Must target .lightbox--open .lightbox__figure (specificity 0,2,0) to
+   override the transition declared there, not the base .lightbox__figure rule. */
 @media (prefers-reduced-motion: reduce) {
   .lightbox,
-  .lightbox__figure {
+  .lightbox--open .lightbox__figure {
     transition: none;
   }
 }
