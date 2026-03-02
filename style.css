@@ -133,13 +133,27 @@ main {
   max-width: 1200px;
   max-height: 90vh;        /* outer constraint — image + caption never exceed this */
 
-  /* Scale-in animation: starts slightly small, grows to natural size on open */
-  transform: scale(0.88);
+}
+
+/* Scale-in only when opening: @starting-style sets the first-paint value for the rule,
+   so the transition plays when .lightbox--open is added but NOT when it is removed. */
+.lightbox--open .lightbox__figure {
+  transform: scale(1);
   transition: transform 0.3s ease;
 }
 
-.lightbox--open .lightbox__figure {
-  transform: scale(1);
+@starting-style {
+  .lightbox--open .lightbox__figure {
+    transform: scale(0.88);
+  }
+}
+
+/* Respect the user's motion preference — disable all lightbox animations */
+@media (prefers-reduced-motion: reduce) {
+  .lightbox,
+  .lightbox__figure {
+    transition: none;
+  }
 }
 
 .lightbox__img {
